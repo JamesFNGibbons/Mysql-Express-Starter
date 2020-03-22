@@ -68,5 +68,26 @@ async () => {
     
   }
 
+  /** 
+   * Load the middleware from the middlware directory, 
+   * if there is anything to load.
+   * 
+  */
+  for(let middlware of fs.readdirSync('./middleware')) {
+    if(middlware !== '.keep') {
+      app.use(require('./middleware/' + middlware));
+    }
+  }
+
+  /** 
+   * Load the API endpoints into the express application.
+   */
+  for(let endpoint of fs.readdirSync('./endpoints')) {
+    if(endpoint !== '.keep') {
+      app.use('/api/' + endpoint.split('.js')[0], require('./endpoints/' + endpoint));
+      console.log('[ENDPOINT] => Loading endpoint ' + endpoint);
+    }
+  }
+
 }
 
